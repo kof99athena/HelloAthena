@@ -1,15 +1,28 @@
 package com.athena.helloathena
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.materialIcon
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MovableContent
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -27,40 +40,45 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent { //기본적으로 표시 될 화면
             HelloAthenaTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                ButtonExample(onButtonClicked = {
+                    Toast.makeText(this, "send clicked", Toast.LENGTH_SHORT).show()
+                })
             }
-        }
-    }
-}
-//1. onCreate에서 바로 코딩을 하지 않는다.
-//Greeting이라는 함수를 만들어두고(컴포저블함수), 이것을 @프리뷰 @컴포저블 함수에 테마를 지정하고 코드를 넣어서 프리뷰를 본다.
+        }//setContent
+    }//onCreate
+}//Activity class
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!\nHello $name!\nHello $name!",
-        modifier = Modifier.size(300.dp),
-        fontSize = 30.sp,
-        fontWeight = FontWeight.Bold,
-        fontFamily = FontFamily.Cursive, //폰트 종류
-        letterSpacing = 2.sp, //글자간격을 말함. padding이 아니다.
-        maxLines = 2,
-        textDecoration = TextDecoration.Underline,
-        textAlign = TextAlign.End //컨텐츠 사이즈만
-    // 큼 나온다. modifire의 세로크기를 300dp로 만듬
-    )
-}
+//내가 만들어야할 컴포넌트
+//버튼을 만들기위해서는 버튼을 만들고 onClick이벤트를 만들어야한다.
+fun ButtonExample(onButtonClicked: () -> Unit) {
+    //fun ButtonExample함수의 파라미터는 onButtonClicked이다
+    //onButtonClicked는 onCreate에서 세팅할 수 있게 만들어둠.
+    Button(onClick = onButtonClicked,
+           enabled = true,
+           border = BorderStroke(width = 10.dp, Color.Magenta),
+           shape = RoundedCornerShape(0.dp,10.dp,0.dp,10.dp),
+           contentPadding = PaddingValues(20.dp,10.dp), // contentPadding은 안의 아이콘이나 Text가 들어있는 영역의 padding을 말한다.
+
+        )
+     {
+        //enabled에 false를 주게되면 버튼이 회색으로 변하고 클릭이 막힌다.
+        //onCreate에 있는 onButtonClicked이 수행된다.
+        Icon(
+            //순서대로 들어가므로 Text위에 적어준다. 
+            imageVector = Icons.Filled.Send,
+            contentDescription = null //이게 무엇인지 설명을 적는곳이다.
+        )
+        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+        Text(text = "send")
+    }
+}//ButtonExample method : 대문자인이유는?  다른 컴포넌트들과 구별하기 위해서 (원래 뷰프레임워크는 소문자로 함수를 쓴다.)
 
 @Preview(showBackground = true)
 //xml 파일이 아닌데도 프리뷰를 볼 수 있다. split으로 화면을 바로 볼수있다.
 @Composable
 fun GreetingPreview() {
     HelloAthenaTheme {
-        Greeting("android")
+        ButtonExample(onButtonClicked = {})
     }
 }
