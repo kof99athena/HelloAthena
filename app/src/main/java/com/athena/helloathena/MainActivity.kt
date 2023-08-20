@@ -5,14 +5,21 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Button
@@ -24,7 +31,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MovableContent
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,47 +47,57 @@ import com.athena.helloathena.ui.theme.HelloAthenaTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { //기본적으로 표시 될 화면
+        setContent {
             HelloAthenaTheme {
-                ButtonExample(onButtonClicked = {
-                    Toast.makeText(this, "send clicked", Toast.LENGTH_SHORT).show()
-                })
-            }
+                ModifierEx()
+            }//HelloAthenaTheme
         }//setContent
     }//onCreate
 }//Activity class
 
 @Composable
-//내가 만들어야할 컴포넌트
-//버튼을 만들기위해서는 버튼을 만들고 onClick이벤트를 만들어야한다.
-fun ButtonExample(onButtonClicked: () -> Unit) {
-    //fun ButtonExample함수의 파라미터는 onButtonClicked이다
-    //onButtonClicked는 onCreate에서 세팅할 수 있게 만들어둠.
-    Button(onClick = onButtonClicked,
-           enabled = true,
-           border = BorderStroke(width = 10.dp, Color.Magenta),
-           shape = RoundedCornerShape(0.dp,10.dp,0.dp,10.dp),
-           contentPadding = PaddingValues(20.dp,10.dp), // contentPadding은 안의 아이콘이나 Text가 들어있는 영역의 padding을 말한다.
-
-        )
-     {
-        //enabled에 false를 주게되면 버튼이 회색으로 변하고 클릭이 막힌다.
-        //onCreate에 있는 onButtonClicked이 수행된다.
+//내가만든 컴포저블 함수는 ModifierEx()이다
+fun ModifierEx() {
+    //기본 왼쪽 상단에 위치함
+    Button(
+        //버튼 색상을 바꿀때
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Red, //버튼 자체의 컬러
+            contentColor = Color.Cyan //Text컬러
+            //버튼의 배경색은 color안에 파라미터값으로 넣어줘야한다.
+            //modifier에서 배경색은 UI 전체 틀을 말한다. (배경그림)  버튼의 색깔이 아니다.
+            //버튼 색깔은 colors에서 바꾼다!
+        ),
+        enabled = true,
+        onClick = {},
+        modifier = Modifier
+            .size(200.dp)
+            .padding(10.dp, 10.dp, 30.dp, 20.dp).background(Color.DarkGray)
+        //modifier background는 요소의 배경색을 말한다.
+        //modifier에서 size는 버튼 크기를 말하고, padding은 겉에 큰 화면에서의 버튼과 떨어진 크기를 말한다.
+    ) {
         Icon(
-            //순서대로 들어가므로 Text위에 적어준다. 
-            imageVector = Icons.Filled.Send,
-            contentDescription = null //이게 무엇인지 설명을 적는곳이다.
+            imageVector = Icons.Filled.Search,
+            contentDescription = null, //아이콘과 Text가 같은 상황이므로 굳이 쓰지말자
+            modifier = Modifier.background(Color.Blue)
         )
-        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "send")
+        Spacer(modifier = Modifier
+            .size(ButtonDefaults.IconSpacing)
+            .background(Color.Yellow))
+        Text(
+            text = "Search",
+            //modifier = Modifier.clickable {  } 버튼 자체가 눌리는게 아니다. 텍스트가 눌려진다.
+            modifier = Modifier.offset(x = 50.dp, y = 50.dp) //스페이서 다음부터 x,y축에 얼마나 떨어져있는가
+        )
     }
-}//ButtonExample method : 대문자인이유는?  다른 컴포넌트들과 구별하기 위해서 (원래 뷰프레임워크는 소문자로 함수를 쓴다.)
+
+}//ModifierEx method
 
 @Preview(showBackground = true)
 //xml 파일이 아닌데도 프리뷰를 볼 수 있다. split으로 화면을 바로 볼수있다.
 @Composable
 fun GreetingPreview() {
     HelloAthenaTheme {
-        ButtonExample(onButtonClicked = {})
+        ModifierEx()
     }
 }
