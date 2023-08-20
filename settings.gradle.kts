@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "HelloAthena"
 include(":app")
+include(":surface")
