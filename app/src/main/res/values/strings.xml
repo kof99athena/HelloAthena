@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HelloAthena</string>
+    <string name="title_activity_row">Row</string>
 </resources>
