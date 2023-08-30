@@ -78,7 +78,7 @@ fun RowEx() {
         //horizontalArrangement = Arrangement.SpaceAround//가로로 중앙정렬
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier
-            .width(200.dp)
+            .width(300.dp)
             .height(40.dp)
     ) {
         //Row는 가로 , align은 세로
@@ -96,6 +96,7 @@ fun RowEx() {
         Text(
             text = "두 번째!",
             modifier = Modifier.weight(3f) //weight은 비중
+                .background(Color.Yellow)
         )
         Icon(
             imageVector = Icons.Filled.AccountBox,
@@ -106,6 +107,7 @@ fun RowEx() {
             text = "세 번째!",
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(3f)
+                .background(Color.Gray)
         )
     }
 }
