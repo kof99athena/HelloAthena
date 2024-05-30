@@ -5,11 +5,19 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,46 +37,35 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HelloAthenaTheme {
-                ButtonExample(onButtonClicked = {
-                    Toast.makeText(this, "Send Message", Toast.LENGTH_SHORT).show()
-                })
+                ModifierEx()
             }//athena theme
         }
     }
 }
 
 @Composable
-fun ButtonExample(onButtonClicked: () -> Unit) {
-//    Button(onClick = onButtonClicked) {
-//        Text(text = "Send")
-//    }
-    //1. 버튼 클릭 시 토스트 띄우기
-//    Button(onClick = onButtonClicked) {
-//        Text(text = "Send")
-//    }
-
-    //2. Icon 추가하기
-    //modifier 추가하기
-    //버튼에 enabled 속성 추가
-    //shape 지정
+fun ModifierEx() {
     Button(
-        onClick = onButtonClicked,
-        enabled = true,
-        border = BorderStroke(10.dp, Color.Magenta),
-        shape = RoundedCornerShape(10.dp),
-        contentPadding = PaddingValues(20.dp)
+        onClick = {},
+        modifier = Modifier
+            .size(200.dp)
+            .padding(30.dp),
+        colors = ButtonDefaults.buttonColors(
+            contentColor = Color.Magenta, containerColor = Color.Cyan
+        )
     ) {
-        Icon(imageVector = Icons.Filled.Send, contentDescription = "Send message to user")
-        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Send")
+        Icon(imageVector = Icons.Filled.Search, contentDescription = "search button", modifier = Modifier.background(
+            Color.Blue
+        ))
+        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing).background(Color.Yellow))
+        Text(text = "Search items", Modifier.offset(x = 10.dp, y = 10.dp))
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     HelloAthenaTheme {
-        ButtonExample(onButtonClicked = {})
+        ModifierEx()
     }
 }
